@@ -16,6 +16,15 @@ set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
+find_package(Doxigen)
+if(DOXYGEN_FOUND)
+    add_custom_target(docs ${DOXYGEN_EXECUTABLE} docs.doxyfile
+       COMMENT "Generating API documentation with Doxygen"
+       VERBATIM
+       SOURCES ${PRJ_DOXY}
+       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
 
 #=================== INCLUSION OF Project Files ====================#
 set(FORMS_DIR "${CMAKE_SOURCE_DIR}/forms")
