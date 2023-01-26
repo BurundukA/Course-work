@@ -8,6 +8,20 @@ endif()
 
 set(CMAKE_CONFIGURATION_TYPES "Release;RelWithDebInfo" CACHE STRING "" FORCE)
 
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+	set(doxyfile_in ${CMAKE_SOURCE_DIR})
+
+	configure_file(Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+	add_custom_target(docs 
+	${DOXYGEN_EXECUTABLE}
+	${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+	COMMENT "Generating API documentation with Doxygen"
+	VERBATIM
+	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
 #======================= INCLUSION OF Qt =======================#
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -16,14 +30,7 @@ set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
-find_package(Doxigen)
-if(DOXYGEN_FOUND)
-    add_custom_target(docs ${DOXYGEN_EXECUTABLE} docs.doxyfile
-       COMMENT "Generating API documentation with Doxygen"
-       VERBATIM
-       SOURCES ${PRJ_DOXY}
-       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-endif()
+
 
 
 #=================== INCLUSION OF Project Files ====================#
